@@ -1,7 +1,8 @@
-package com.example.chatroom.config;
+package com.example.chatroom.config.websocket;
 
-import com.example.chatroom.controllers.ChatMessage;
-import com.example.chatroom.controllers.MessageType;
+
+import com.example.chatroom.models.Message;
+import com.example.chatroom.models.MessageType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -23,7 +24,7 @@ public class WebSocketEventListener {
         String username = (String) headerAccessor.getSessionAttributes().get("username");
         if (username != null) {
             log.info("user disconnected: {}", username);
-            var chatMessage = ChatMessage.builder()
+            var chatMessage = Message.builder()
                     .type(MessageType.LEAVE)
                     .sender(username)
                     .build();

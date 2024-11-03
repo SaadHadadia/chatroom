@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Room</title>
+</head>
+<body>
+
+    <form th:action="@{/signup}" method="post">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required>
+
+        <label for="email">E-mail</label>
+        <input id="email" name="email" type="email" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required>
+
+        <label for="validatepassword">Validate Password</label>
+        <input id="validatepassword" name="validatepassword" type="password" required>
+
+        <button type="submit">Sign Up</button>
+    </form>
+
+</body>
+</html>
