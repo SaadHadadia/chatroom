@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ChatController {
@@ -18,6 +19,11 @@ public class ChatController {
     @Autowired
     public ChatController(Encryptor encryptor) {
         this.encryptor = encryptor;
+    }
+
+    @GetMapping("chat")
+    public String chatget(){
+        return "chat";
     }
 
     @MessageMapping("/chat.sendMessage")

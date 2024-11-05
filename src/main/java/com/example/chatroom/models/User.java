@@ -2,8 +2,13 @@ package com.example.chatroom.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,7 +17,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "user")
-public class User {
+public class User implements UserDetails {
 
     // Primary key with auto-increment strategy
     @Id
@@ -33,7 +38,15 @@ public class User {
     @Column(name = "profile", nullable = false)
     protected Profile profile = Profile.STUDENT;
 
-    @Column(name = "privatekey")
+    @Column(name = "email_verified_at")
+    protected String email_verified_at = null;
+
+    @Column(name = "created_at")
+    protected String created_at;
+
+    @Column(name = "updated_at")
+    protected String updated_at;
+
     protected String privatekey;
 
     @Column(name = "publickey")
@@ -47,5 +60,48 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "chat_id")
     )
     protected Set<Chat> chats = new HashSet<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + profile.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    public String getRole(){
+        return String.valueOf(profile);
+    }
+
+    public void setRole(Profile role) {
+        this.profile = role;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }
