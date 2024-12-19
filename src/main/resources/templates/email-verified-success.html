@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Verified</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .animate-pulse-slow {
+            animation: pulse 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-100 to-purple-100">
+    <div class="fixed inset-0 pointer-events-none">
+        <div class="absolute top-20 left-20 w-32 h-32 bg-blue-200 rounded-full opacity-50 animate-float"></div>
+        <div class="absolute bottom-20 right-20 w-40 h-40 bg-purple-200 rounded-full opacity-50 animate-float" style="animation-delay: -2s"></div>
+        <div class="absolute top-1/2 left-1/3 w-24 h-24 bg-indigo-200 rounded-full opacity-50 animate-float" style="animation-delay: -4s"></div>
+    </div>
+
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-lg animate-pulse-slow text-center">
+            <svg class="w-20 h-20 text-green-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">Email Verified Successfully!</h1>
+            <p class="text-gray-600 mb-6">Your email has been verified. You can now log in to your account.</p>
+            <a href="/login" class="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition duration-200 ease-in-out">
+                Go to Login
+            </a>
+        </div>
+    </div>
+</body>
+</html>
