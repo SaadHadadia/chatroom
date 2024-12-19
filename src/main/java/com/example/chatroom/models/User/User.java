@@ -1,22 +1,27 @@
-package com.example.chatroom.models;
+package com.example.chatroom.models.User;
 
+import com.example.chatroom.models.Chat;
+import com.example.chatroom.models.ChatRoom;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * Represents a user with attributes like name, email, keys, and chats.
  */
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails {
 
     // Primary key with auto-increment strategy
@@ -24,7 +29,10 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
 
+    @Column(name = "firstname", nullable = false)
     protected String firstname;
+
+    @Column(name = "lastname", nullable = false)
     protected String lastname;
 
     @Column(name = "email", unique = true, nullable = false)
@@ -39,18 +47,24 @@ public class User implements UserDetails {
     protected Profile profile = Profile.STUDENT;
 
     @Column(name = "email_verified_at")
-    protected String email_verified_at = null;
+    protected LocalDateTime emailVerifiedAt = null;
 
-    @Column(name = "created_at")
-    protected String created_at;
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
+    @LastModifiedDate
     @Column(name = "updated_at")
-    protected String updated_at;
+    private LocalDateTime updatedAt;
 
+    @Transient
     protected String privatekey;
 
     @Column(name = "publickey")
     protected String publickey;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PersonalAccessToken> tokens = new ArrayList<>();
 
     // Many-to-Many relationship between User and Chat entities
     @ManyToMany
@@ -60,6 +74,9 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "chat_id")
     )
     protected Set<Chat> chats = new HashSet<>();
+
+    @ManyToMany(mappedBy = "admins")
+    protected Set<ChatRoom> adminChats = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -104,4 +121,12 @@ public class User implements UserDetails {
         return true;
     }
 
+    public boolean isEmailVerified() {
+        return emailVerifiedAt != null;
+    }
+
+    // Consider adding a method to verify email
+    public void verifyEmail() {
+        this.emailVerifiedAt = LocalDateTime.now();
+    }
 }

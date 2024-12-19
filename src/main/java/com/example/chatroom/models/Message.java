@@ -1,10 +1,8 @@
 package com.example.chatroom.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import java.time.LocalDateTime;
 
 /**
  * Represents a message in a chat, including content, type, and sender information.
@@ -14,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor  // Required by JPA
 @AllArgsConstructor // Required by @Builder
 @Entity
+@Getter
 @Table(name = "messages")
 public class Message {
 
@@ -22,6 +21,7 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
 
+    // sender if the message
     @Column(name = "username", nullable = false)
     protected String username;
 
@@ -38,5 +38,8 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "chat_id")
     private Chat chat;
+
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp;
 
 }

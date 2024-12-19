@@ -1,4 +1,4 @@
-package com.example.chatroom.models;
+package com.example.chatroom.models.User;
 
 /**
  * Enum representing different user profiles.

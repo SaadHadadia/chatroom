@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333333;
+            background: linear-gradient(135deg, #EBF4FF 0%, #F3E8FF 100%);
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            font-size: 24px;
+            background: linear-gradient(to right, #2563EB, #9333EA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        .content {
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .footer {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            color: #ffffff !important;
+            background: linear-gradient(to right, #2563EB, #9333EA);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">Verify Your Email</div>
+        <div class="content">
+            <p>Hello {{name}},</p>
+            <p>Please click the button below to verify your email.</p>
+            <a href="{{verificationLink}}" class="btn">Verify Your Email</a>
+        </div>
+        <div class="footer">
+            <p>If you did not request this, please ignore this email.</p>
+        </div>
+    </div>
+</body>
+</html>

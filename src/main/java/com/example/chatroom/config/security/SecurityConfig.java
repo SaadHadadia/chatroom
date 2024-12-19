@@ -5,14 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // Add this annotation to enable method-level security
 public class SecurityConfig {
 
     @Autowired
@@ -32,10 +33,21 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DefaultSecurityFilterChain securityWebFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/register", "/logout", "/chat").permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/login",
+                                "/register",
+                                "/logout",
+                                "/verify/**",
+                                "/verify-email",
+                                "/password-reset",
+                                "/error",
+                                "/email-verified-success",
+                                "/test/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -43,7 +55,10 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
-                .logout(config -> config.logoutSuccessUrl("/"))
+                .logout(config -> config
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
+                )
                 .build();
     }
 }

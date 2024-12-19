@@ -1,8 +1,11 @@
 package com.example.chatroom.models;
 
+import com.example.chatroom.models.User.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a specialized chat room with an assigned tutor.
@@ -13,9 +16,18 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class ChatRoom extends Chat {
 
-    // Many-to-One relationship with User to assign a tutor to the chat room
-    @ManyToOne
-    @JoinColumn(name = "tutor_id")  // Foreign key column for the tutor user
-    private User tutor;
+    @Column(name = "name", nullable = false)
+    String name;
+
+    @ManyToMany
+    @JoinTable(
+            name = "chatroom_admin",
+            joinColumns = @JoinColumn(name = "chat_id"),
+            inverseJoinColumns = @JoinColumn(name = "admin_id")
+    )
+    private Set<User> admins = new HashSet<>();
+
+    @Transient
+    private Message latestMessage;
 
 }

@@ -1,5 +1,6 @@
 package com.example.chatroom.models;
 
+import com.example.chatroom.models.User.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +16,9 @@ import java.util.Set;
 @Data
 @NoArgsConstructor  // Adds a no-argument constructor needed by JPA
 @Entity
-@Table(name = "chat")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type") // Column to distinguish between different chat types
+@Table(name="chats")
 public class Chat {
 
     // Primary key with auto-increment strategy

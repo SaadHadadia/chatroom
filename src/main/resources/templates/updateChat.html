@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Chat Room</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-md w-[32rem]">
+            <h1 class="text-2xl font-semibold text-gray-800 mb-6">Update Chat Room</h1>
+            
+            <!-- Chat Room Name Update -->
+            <form th:action="@{/chatroom/{id}/updateName(id=${chatRoom.id})}" method="post" class="mb-6">
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Chat Room Name</label>
+                    <div class="flex gap-2">
+                        <input type="text" 
+                               id="name" 
+                               name="name" 
+                               th:value="${chatRoom.name}"
+                               required 
+                               class="flex-1 rounded-md border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500">
+                        <button type="submit" 
+                                class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            Update Name
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Current Users Section -->
+            <div class="mb-6">
+                <h2 class="text-lg font-medium text-gray-800 mb-3">Current Users</h2>
+                <div class="space-y-2 border border-gray-300 rounded-md p-3 max-h-60 overflow-y-auto">
+                    <div th:each="user : ${currentUsers}" class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span th:text="${user.firstname + ' ' + user.lastname + ' (' + user.email + ')'}"
+                                  class="text-sm"></span>
+                            <span th:if="${admins.contains(user)}" 
+                                  class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Admin</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <form th:if="${!admins.contains(user)}" 
+                                  th:action="@{/chatroom/{id}/makeAdmin(id=${chatRoom.id})}" 
+                                  method="post" 
+                                  class="inline">
+                                <input type="hidden" name="userId" th:value="${user.id}">
+                                <button type="submit" 
+                                        class="text-sm bg-green-600 text-white px-2 py-1 rounded hover:bg-green-700">
+                                    Make Admin
+                                </button>
+                            </form>
+                            <form th:if="${admins.contains(user) && admins.size() > 1}" 
+                                  th:action="@{/chatroom/{id}/removeAdmin(id=${chatRoom.id})}" 
+                                  method="post" 
+                                  class="inline">
+                                <input type="hidden" name="userId" th:value="${user.id}">
+                                <button type="submit" 
+                                        class="text-sm bg-yellow-600 text-white px-2 py-1 rounded hover:bg-yellow-700">
+                                    Remove Admin
+                                </button>
+                            </form>
+                            <form th:action="@{/chatroom/{id}/removeUser(id=${chatRoom.id})}" 
+                                  method="post" 
+                                  class="inline">
+                                <input type="hidden" name="userId" th:value="${user.id}">
+                                <button type="submit" 
+                                        class="text-sm bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">
+                                    Remove
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add New Users Section -->
+            <div>
+                <h2 class="text-lg font-medium text-gray-800 mb-3">Add New Users</h2>
+                <form th:action="@{/chatroom/{id}/addUsers(id=${chatRoom.id})}" method="post">
+                    <div class="space-y-2 border border-gray-300 rounded-md p-3 max-h-60 overflow-y-auto mb-4">
+                        <div th:each="user : ${availableUsers}" class="flex items-center">
+                            <input type="checkbox"
+                                   th:id="${'user-' + user.id}"
+                                   name="userIds"
+                                   th:value="${user.id}"
+                                   class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                            <label th:for="${'user-' + user.id}"
+                                   class="ml-2 block text-sm text-gray-900"
+                                   th:text="${user.firstname + ' ' + user.lastname + ' (' + user.email + ')'}">
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                        Add Selected Users
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

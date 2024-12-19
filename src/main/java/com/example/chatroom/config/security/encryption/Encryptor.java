@@ -20,7 +20,7 @@ public class Encryptor {
 
     public Message encrypt(Message msg) throws Exception {
         this.symEncryption.generateSecretKey();
-        msg.setSecretKey(this.symEncryption.getSecretKey());
+//        msg.setSecretKey(this.symEncryption.getSecretKey());
         msg.setContent(this.symEncryption.encrypt(msg.getContent()));
         return msg;
     }
